@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/resources/templates/template.xhtml">
+	<ui:define name="content">
+
+		<p:panelGrid>
+			<p:column style="width:50%">
+
+				<h:form id="formSearch">
+					<p:panel id="panelSearch">
+						<p:panelGrid columns="3">
+							<p:outputLabel for="txtSearch" value="Search for:" />
+							<p:inputText id="txtSearch" value="#{library.query}" size="30" />
+							<p:commandButton id="btnSearch" title="Search"
+								icon="ui-icon-search" value="Search" action="#{library.search}"
+								process="@form" update="listBooks" />
+						</p:panelGrid>
+					</p:panel>
+
+					<p:dataList id="listBooks" value="#{library.books}" var="book"
+						type="definition">
+						<f:facet name="header">
+							<h:outputText value="Book list" />
+						</f:facet>
+						<h:outputText value="#{book.title}" styleClass="bookTitle" />
+						<br />
+						<h:outputText value="by #{book.author}" styleClass="bookAuthor" />
+						<f:facet name="description">
+							<h:outputText value="#{book.desc}" />
+						</f:facet>
+					</p:dataList>
+
+					<p:messages showDetail="true" autoUpdate="true" />
+				</h:form>
+			</p:column>
+			<p:column>
+				<p:panel>Details</p:panel>
+			</p:column>
+		</p:panelGrid>
+	</ui:define>
+</ui:composition>
