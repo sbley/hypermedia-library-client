@@ -5,15 +5,23 @@ import javax.enterprise.inject.Model;
 @Model
 public class Book {
 
+    private String href;
     private String title;
     private String author;
     private String desc;
+    private int borrower;
 
-    public Book(String title, String author, String desc) {
+    public Book(String href, String title, String author, String desc, int borrower) {
         super();
+        this.href = href;
         this.title = title;
         this.author = author;
         this.desc = desc;
+        this.borrower = borrower;
+    }
+
+    public String getHref() {
+        return href;
     }
 
     public String getTitle() {
@@ -28,4 +36,7 @@ public class Book {
         return desc;
     }
 
+    public int getBorrower() {
+        return borrower;
+    }
 }

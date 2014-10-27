@@ -25,7 +25,10 @@
 						<f:facet name="header">
 							<h:outputText value="Book list" />
 						</f:facet>
-						<h:outputText value="#{book.title}" styleClass="bookTitle" />
+						<p:commandLink action="#{library.showDetails(book)}"
+							update=":detailsForm">
+							<h:outputText value="#{book.title}" styleClass="bookTitle" />
+						</p:commandLink>
 						<br />
 						<h:outputText value="by #{book.author}" styleClass="bookAuthor" />
 						<f:facet name="description">
@@ -37,7 +40,25 @@
 				</h:form>
 			</p:column>
 			<p:column>
-				<p:panel>Details</p:panel>
+				<h:form id="detailsForm">
+					<p:panel id="panelDetails" rendered="#{not empty library.detailBook}">
+						<f:facet name="header">
+							<h:outputText value="Details" />
+						</f:facet>
+						<p:panelGrid columns="2">
+							<p:outputLabel value="Title:" />
+							<h:outputText value="#{library.detailBook.title}" />
+							<p:outputLabel value="Author:" />
+							<h:outputText value="#{library.detailBook.author}" />
+							<p:outputLabel value="Description:" />
+							<h:outputText value="#{library.detailBook.desc}" />
+							<p:outputLabel value="Description:" />
+							<h:outputText value="#{library.detailBook.desc}" />
+							<p:outputLabel value="Status:" />
+							<h:outputText value="#{library.detailBook.}" />
+						</p:panelGrid>
+					</p:panel>
+				</h:form>
 			</p:column>
 		</p:panelGrid>
 	</ui:define>
