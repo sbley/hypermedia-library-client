@@ -8,15 +8,14 @@
 
 		<p:panelGrid>
 			<p:column style="width:50%">
-
 				<h:form id="formSearch">
 					<p:panel id="panelSearch">
 						<p:panelGrid columns="3">
 							<p:outputLabel for="txtSearch" value="Search for:" />
-							<p:inputText id="txtSearch" value="#{library.query}" size="30" />
+							<p:inputText id="txtSearch" value="#{library.query}" size="30" placeholder="query"/>
 							<p:commandButton id="btnSearch" title="Search"
 								icon="ui-icon-search" value="Search" action="#{library.search}"
-								process="@form" update="listBooks" />
+								process="@form" update="listBooks :formDetails" />
 						</p:panelGrid>
 					</p:panel>
 
@@ -26,7 +25,7 @@
 							<h:outputText value="Book list" />
 						</f:facet>
 						<p:commandLink action="#{library.showDetails(book)}"
-							update=":detailsForm">
+							update=":formDetails">
 							<h:outputText value="#{book.title}" styleClass="bookTitle" />
 						</p:commandLink>
 						<br />
@@ -35,13 +34,12 @@
 							<h:outputText value="#{book.desc}" />
 						</f:facet>
 					</p:dataList>
-
-					<p:messages showDetail="true" autoUpdate="true" />
 				</h:form>
 			</p:column>
 			<p:column>
-				<h:form id="detailsForm">
-					<p:panel id="panelDetails" rendered="#{not empty library.detailBook}">
+				<h:form id="formDetails">
+					<p:panel id="panelDetails"
+						rendered="#{not empty library.detailBook}">
 						<f:facet name="header">
 							<h:outputText value="Details" />
 						</f:facet>
@@ -52,14 +50,24 @@
 							<h:outputText value="#{library.detailBook.author}" />
 							<p:outputLabel value="Description:" />
 							<h:outputText value="#{library.detailBook.desc}" />
-							<p:outputLabel value="Description:" />
-							<h:outputText value="#{library.detailBook.desc}" />
 							<p:outputLabel value="Status:" />
-							<h:outputText value="#{library.detailBook.}" />
+							<h:panelGroup rendered="#{empty library.detailBook.borrower}">
+								<p:commandButton value="Lend" action="#{library.lend}"
+									process="@this txtLendTo" update="@form" />
+								<p:outputLabel value=" to " />
+								<p:inputText id="txtLendTo" value="#{library.lendTo}" size="6" placeholder="member" />
+							</h:panelGroup>
+							<h:panelGroup rendered="#{not empty library.detailBook.borrower}">
+								<p:outputLabel value="Lent to member " />
+								<h:outputText value="#{library.detailBook.borrower} " />
+								<p:commandButton value="Return" action="#{library.takeBack}"
+									update="@form" />
+							</h:panelGroup>
 						</p:panelGrid>
 					</p:panel>
 				</h:form>
 			</p:column>
 		</p:panelGrid>
+		<p:messages showDetail="true" autoUpdate="true" />
 	</ui:define>
 </ui:composition>

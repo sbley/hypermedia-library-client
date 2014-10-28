@@ -2,6 +2,8 @@ package de.saxsys.hypermedia.jsf;
 
 import javax.enterprise.inject.Model;
 
+import com.theoryinpractise.halbuilder.api.Link;
+
 @Model
 public class Book {
 
@@ -9,15 +11,18 @@ public class Book {
     private String title;
     private String author;
     private String desc;
-    private int borrower;
+    private Integer borrower;
+    private Link relLend;
+    private Link relReturn;
 
-    public Book(String href, String title, String author, String desc, int borrower) {
+    public Book(String href, String title, String author, String desc, Link relLend, Link relReturn) {
         super();
         this.href = href;
         this.title = title;
         this.author = author;
         this.desc = desc;
-        this.borrower = borrower;
+        this.relLend = relLend;
+        this.relReturn = relReturn;
     }
 
     public String getHref() {
@@ -36,7 +41,19 @@ public class Book {
         return desc;
     }
 
-    public int getBorrower() {
+    public Integer getBorrower() {
         return borrower;
+    }
+
+    public void setBorrower(Integer borrower) {
+        this.borrower = borrower;
+    }
+
+    public Link getRelLend() {
+        return relLend;
+    }
+
+    public Link getRelReturn() {
+        return relReturn;
     }
 }
