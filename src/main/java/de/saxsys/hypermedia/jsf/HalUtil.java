@@ -6,4 +6,11 @@ public class HalUtil {
         return href.replaceFirst("\\{.+\\}", param);
     }
 
+    public static Integer toInt(Object value) {
+        if (value.getClass().isAssignableFrom(String.class)) {
+            String valueStr = (String) value;
+            return Integer.valueOf(valueStr);
+        }
+        return null;
+    }
 }

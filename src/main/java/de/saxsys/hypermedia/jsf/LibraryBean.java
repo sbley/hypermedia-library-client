@@ -96,7 +96,7 @@ public class LibraryBean implements Serializable {
         Response response =
                 apiClient.target(replaceParam(detailBook.getRelLend().getHref(), String.valueOf(lendTo)))
                         .request(HAL_JSON)
-                        .put(Entity.json(""));
+                        .put(Entity.json("{\"memberId\":2}"));
         ContentRepresentation rep = response.readEntity(ContentRepresentation.class);
         if (response.getStatus() >= 400) {
             String message = (String) rep.getValue("title");
