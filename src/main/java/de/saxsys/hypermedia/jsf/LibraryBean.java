@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -28,6 +27,8 @@ import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
+
+import de.saxsys.hypermedia.jsf.interceptor.MeasureTime;
 
 @Named("library")
 @ViewScoped
@@ -51,6 +52,7 @@ public class LibraryBean implements Serializable {
         apiClient = ClientBuilder.newClient().register(JaxRsHalBuilderReaderSupport.class);
     }
 
+    @MeasureTime
     public void search() {
         try {
             WebTarget apiHome = apiClient.target(BASE_URL);
@@ -61,23 +63,27 @@ public class LibraryBean implements Serializable {
             Link searchLink = repHome.getLinkByRel("lib:search");
             String href = replaceParam(searchLink.getHref(), query);
             Response responseSearch = apiClient.target(href).request(HAL_JSON).get();
-            ContentRepresentation repSearch = responseSearch.readEntity(ContentRepresentation.class);
+            ContentRepresentation repSearch =
+                    responseSearch.readEntity(ContentRepresentation.class);
 
-            Collection<ReadableRepresentation> resultSet = repSearch.getResourceMap().get("lib:book");
+            Collection<ReadableRepresentation> resultSet =
+                    repSearch.getResourceMap().get("lib:book");
             books.clear();
             for (ReadableRepresentation rep : resultSet) {
                 books.add(new Book(
                         rep.getResourceLink().getHref(), (String) rep.getValue("title"),
-                        (String) rep.getValue("author"), (String) rep.getValue("description", null),
-                        rep.getLinkByRel("lib:lend"), rep.getLinkByRel("lib:return")));
+                        (String) rep.getValue("author"),
+                        (String) rep.getValue("description", null), rep.getLinkByRel("lib:lend"),
+                        rep.getLinkByRel("lib:return")));
             }
             detailBook = null;
         } catch (Exception e) {
             LOGGER.error("Error during search", e);
-            displayMessage(SEVERITY_ERROR, "Error during search", e.getMessage());
+            displayError("Error during search", e.getMessage());
         }
     }
 
+    @MeasureTime
     public void showDetails(Book item) {
         LOGGER.info("Show details for book at {}", item.getHref());
         try {
@@ -87,14 +93,16 @@ public class LibraryBean implements Serializable {
             LOGGER.info("Book: {}", detailBook.getTitle());
         } catch (Exception e) {
             LOGGER.error("Error retrieving book", e);
-            displayMessage(SEVERITY_ERROR, "Error retrieving book", e.getMessage());
+            displayError("Error retrieving book", e.getMessage());
         }
     }
 
+    @MeasureTime
     public void lend() {
         LOGGER.info("Lend book {} to member {}", detailBook.getTitle(), lendTo);
         Response response =
-                apiClient.target(replaceParam(detailBook.getRelLend().getHref(), String.valueOf(lendTo)))
+                apiClient.target(
+                        replaceParam(detailBook.getRelLend().getHref(), String.valueOf(lendTo)))
                         .request(HAL_JSON)
                         .put(Entity.json("{\"memberId\":2}"));
         ContentRepresentation rep = response.readEntity(ContentRepresentation.class);
@@ -102,19 +110,24 @@ public class LibraryBean implements Serializable {
             String message = (String) rep.getValue("title");
             String detail = (String) rep.getValue("detail", null);
             LOGGER.error("{} {}", message, detail);
-            displayMessage(SEVERITY_ERROR, message, detail);
+            displayError(message, detail);
         } else {
             detailBook = toBook(rep);
             lendTo = null;
-            LOGGER.info("Book {} lent to member {}", detailBook.getTitle(), detailBook.getBorrower());
-            displayMessage(SEVERITY_INFO, "Book lent to member " + detailBook.getBorrower(), "");
+            LOGGER.info("Book {} lent to member {}", detailBook.getTitle(),
+                    detailBook.getBorrower());
+            displayInfo("Book lent to member " + detailBook.getBorrower());
         }
     }
 
+    @MeasureTime
     public void takeBack() {
-        LOGGER.info("Return book {} from member {}", detailBook.getTitle(), detailBook.getBorrower());
+        LOGGER.info("Return book {} from member {}", detailBook.getTitle(),
+                detailBook.getBorrower());
         Response response =
-                apiClient.target(replaceParam(detailBook.getRelReturn().getHref(), detailBook.getBorrower().toString()))
+                apiClient.target(
+                        replaceParam(detailBook.getRelReturn().getHref(), detailBook.getBorrower()
+                                .toString()))
                         .request(HAL_JSON)
                         .delete();
         ContentRepresentation rep = response.readEntity(ContentRepresentation.class);
@@ -122,11 +135,11 @@ public class LibraryBean implements Serializable {
             String message = (String) rep.getValue("title");
             String detail = (String) rep.getValue("detail", null);
             LOGGER.error("{} {}", message, detail);
-            displayMessage(SEVERITY_ERROR, message, detail);
+            displayError(message, detail);
         } else {
             detailBook = toBook(rep);
             LOGGER.info("Book {} returned", detailBook.getTitle());
-            displayMessage(SEVERITY_INFO, "Book returned", "");
+            displayInfo("Book returned");
         }
     }
 
@@ -134,16 +147,22 @@ public class LibraryBean implements Serializable {
         Book book =
                 new Book(
                         rep.getResourceLink().getHref(), (String) rep.getValue("title"),
-                        (String) rep.getValue("author"), (String) rep.getValue("description", null),
-                        rep.getLinkByRel("lib:lend"), rep.getLinkByRel("lib:return"));
+                        (String) rep.getValue("author"),
+                        (String) rep.getValue("description", null), rep.getLinkByRel("lib:lend"),
+                        rep.getLinkByRel("lib:return"));
         List<? extends ReadableRepresentation> borrowerResource = rep.getResourcesByRel("borrower");
         if (1 == borrowerResource.size())
             book.setBorrower(Integer.valueOf((String) borrowerResource.get(0).getValue("id")));
         return book;
     }
 
-    private void displayMessage(Severity severity, String message, String detail) {
-        FacesMessage msg = new FacesMessage(severity, message, detail);
+    private void displayError(String message, String detail) {
+        FacesMessage msg = new FacesMessage(SEVERITY_ERROR, message, detail);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    private void displayInfo(String message) {
+        FacesMessage msg = new FacesMessage(SEVERITY_INFO, message, null);
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
