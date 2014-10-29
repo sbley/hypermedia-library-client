@@ -35,8 +35,7 @@ a {
 	margin-left: 1em;
 }
 .ui-datalist-data > dd {
-	font-style: italic;
-	font-size: 0.8em;
+	font-size: 0.9em;
 	margin-bottom: 1ex;
 }
 
@@ -47,4 +46,8 @@ a {
 .bookAuthor {
 	font-size: 0.9em;
 	color: #115577;
+}
+.bookDescription {
+	font-size: 0.8em;
+	font-style: italic;
 }

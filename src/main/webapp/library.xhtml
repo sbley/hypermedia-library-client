@@ -12,13 +12,14 @@
 					<p:panel id="panelSearch">
 						<p:panelGrid columns="3">
 							<p:outputLabel for="txtSearch" value="Search for:" />
-							<p:inputText id="txtSearch" value="#{library.query}" size="30" placeholder="query"/>
+							<p:inputText id="txtSearch" value="#{library.query}" size="30"
+								placeholder="query" />
 							<p:commandButton id="btnSearch" title="Search"
 								icon="ui-icon-search" value="Search" action="#{library.search}"
 								process="@form" update="listBooks :formDetails" />
 						</p:panelGrid>
 					</p:panel>
-
+					<p></p>
 					<p:dataList id="listBooks" value="#{library.books}" var="book"
 						type="definition">
 						<f:facet name="header">
@@ -29,9 +30,8 @@
 							<h:outputText value="#{book.title}" styleClass="bookTitle" />
 						</p:commandLink>
 						<br />
-						<h:outputText value="by #{book.author}" styleClass="bookAuthor" />
 						<f:facet name="description">
-							<h:outputText value="#{book.desc}" />
+							<h:outputText value="by #{book.author}" styleClass="bookAuthor" />
 						</f:facet>
 					</p:dataList>
 				</h:form>
@@ -43,19 +43,23 @@
 						<f:facet name="header">
 							<h:outputText value="Details" />
 						</f:facet>
-						<p:panelGrid columns="2">
-							<p:outputLabel value="Title:" />
-							<h:outputText value="#{library.detailBook.title}" />
-							<p:outputLabel value="Author:" />
-							<h:outputText value="#{library.detailBook.author}" />
-							<p:outputLabel value="Description:" />
-							<h:outputText value="#{library.detailBook.desc}" />
-							<p:outputLabel value="Status:" />
+						<p:panelGrid columns="1">
+							<h:outputText value="#{library.detailBook.title}"
+								styleClass="bookTitle" />
+							<h:outputText value="#{library.detailBook.author}"
+								styleClass="bookAuthor" />
+							<h:outputText value="#{library.detailBook.desc}"
+								rendered="#{not empty library.detailBook.desc}"
+								styleClass="bookDescription" />
+							<h:outputText value="-No description available-"
+								rendered="#{empty library.detailBook.desc}"
+								styleClass="bookDescription" />
 							<h:panelGroup rendered="#{empty library.detailBook.borrower}">
 								<p:commandButton value="Lend" action="#{library.lend}"
 									process="@this txtLendTo" update="@form" />
 								<p:outputLabel value=" to " />
-								<p:inputText id="txtLendTo" value="#{library.lendTo}" size="6" placeholder="member" />
+								<p:inputText id="txtLendTo" value="#{library.lendTo}" size="6"
+									placeholder="member" />
 							</h:panelGroup>
 							<h:panelGroup rendered="#{not empty library.detailBook.borrower}">
 								<p:outputLabel value="Lent to member " />
