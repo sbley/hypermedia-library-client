@@ -98,7 +98,7 @@ public class MainApplication implements FxmlView {
                 authorLabel.setText(newBook.getAuthor() == null ? "" : newBook.getAuthor());
                 descriptionLabel.setText(newBook.getDesc() == null ? "No Description"
                         : newBook.getDesc());
-                returnName.setText(newBook.getBorrower() == null ? "Fehler" : "Lend to member:"
+                returnName.setText(newBook.getBorrower() == null ? "Error" : "Lent to member: "
                         + newBook.getBorrower().toString());
                 lendTextField.setVisible(!newBook.isLent());
                 rentButton.setVisible(!newBook.isLent());
@@ -112,10 +112,6 @@ public class MainApplication implements FxmlView {
         });
 
         errorLabel.textProperty().bind(errorlog.errorProperty());
-
-        errorLabel.textProperty().addListener((ChangeListener<String>) (arg0, arg1, arg2) -> {
-            System.out.println(arg2);
-        });
     }
 
     @FXML

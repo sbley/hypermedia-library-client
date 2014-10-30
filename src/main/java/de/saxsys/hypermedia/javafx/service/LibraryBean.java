@@ -1,5 +1,6 @@
 package de.saxsys.hypermedia.javafx.service;
 
+import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
 import static de.saxsys.hypermedia.javafx.service.HalUtil.replaceParam;
 
 import java.io.Serializable;
@@ -12,10 +13,11 @@ import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.cache.BrowserCacheFeature;
+import org.jboss.resteasy.plugins.interceptors.encoding.AcceptEncodingGZIPFilter;
+import org.jboss.resteasy.plugins.interceptors.encoding.GZIPDecodingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,12 +31,9 @@ import de.saxsys.hypermedia.javafx.interceptor.MeasureTime;
 
 public class LibraryBean implements Serializable {
 
-    private static final String BASE_URL = "http://nb170:8080/rest";
-    private static final String HAL_JSON = "application/hal+json";
     private static final long serialVersionUID = 1L;
+    private static final String BASE_URL = "http://nb170:8080/rest";
     private static final Logger LOGGER = LoggerFactory.getLogger(LibraryBean.class);
-
-    private final List<Book> books = new ArrayList<Book>();
 
     private Client apiClient;
 
@@ -46,14 +45,15 @@ public class LibraryBean implements Serializable {
         apiClient =
                 ClientBuilder.newClient()
                         .register(JaxRsHalBuilderReaderSupport.class)
-                        .register(BrowserCacheFeature.class);
+                        .register(BrowserCacheFeature.class)
+                        .register(GZIPDecodingInterceptor.class)
+                        .register(AcceptEncodingGZIPFilter.class);
     }
 
     public List<Book> search(String query) {
         try {
-            WebTarget apiHome = apiClient.target(BASE_URL);
             // home
-            Response responseHome = apiHome.request(HAL_JSON).get();
+            Response responseHome = apiClient.target(BASE_URL).request(HAL_JSON).get();
             ContentRepresentation repHome = responseHome.readEntity(ContentRepresentation.class);
             // search
             Link searchLink = repHome.getLinkByRel("lib:search");
@@ -61,18 +61,12 @@ public class LibraryBean implements Serializable {
             Response responseSearch = apiClient.target(href).request(HAL_JSON).get();
             ContentRepresentation repSearch =
                     responseSearch.readEntity(ContentRepresentation.class);
-            List<Book> books = new ArrayList<Book>();
             Collection<ReadableRepresentation> resultSet =
                     repSearch.getResourceMap().get("lib:book");
-            books.clear();
+            List<Book> books = new ArrayList<>();
             if (null != resultSet) {
                 for (ReadableRepresentation rep : resultSet) {
                     Book book = toBook(rep);
-                    new Book(
-                            rep.getResourceLink().getHref(), (String) rep.getValue("title", null),
-                            (String) rep.getValue("author", null), (String) rep.getValue(
-                                    "description", null), rep.getLinkByRel("lib:lend"),
-                            rep.getLinkByRel("lib:return"));
                     if (null == book.getTitle() || null == book.getAuthor()) {
                         // get book
                         Response response =
@@ -86,17 +80,17 @@ public class LibraryBean implements Serializable {
             }
             return books;
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOGGER.error("Error during search", e);
             displayError("Error during search", e.getMessage());
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         }
     }
 
     @MeasureTime
-    public Book showDetails(Book item) {
-        LOGGER.debug("Show details for book at {}", item.getHref());
+    public Book showDetails(Book book) {
+        LOGGER.debug("Show details for book at {}", book.getHref());
         try {
-            Response response = apiClient.target(item.getHref()).request(HAL_JSON).get();
+            Response response = apiClient.target(book.getHref()).request(HAL_JSON).get();
             ContentRepresentation rep = response.readEntity(ContentRepresentation.class);
             return toBook(rep);
         } catch (Exception e) {
@@ -116,8 +110,7 @@ public class LibraryBean implements Serializable {
             return null;
         }
         Response response =
-                apiClient.target(
-                        replaceParam(detailBook.getRelLend().getHref(), String.valueOf(lendTo)))
+                apiClient.target(detailBook.getRelLend().getHref())
                         .request(HAL_JSON)
                         .put(Entity.json("{\"memberId\":" + lendTo + "}"));
         ContentRepresentation rep = response.readEntity(ContentRepresentation.class);
@@ -154,7 +147,7 @@ public class LibraryBean implements Serializable {
             displayError(message, detail);
             return null;
         } else {
-            // LOGGER.debug("Book {} returned", detailBook.getTitle());
+            LOGGER.debug("Book {} returned", detailBook.getTitle());
             displayInfo("Book returned");
             return toBook(rep);
         }
@@ -166,6 +159,7 @@ public class LibraryBean implements Serializable {
                         rep.getResourceLink().getHref(), (String) rep.getValue("title", null),
                         (String) rep.getValue("author", null), (String) rep.getValue("description",
                                 null), rep.getLinkByRel("lib:lend"), rep.getLinkByRel("lib:return"));
+        // add borrower if available
         List<? extends ReadableRepresentation> borrowerResource = rep.getResourcesByRel("borrower");
         if (1 == borrowerResource.size())
             book.setBorrower(Integer.valueOf((String) borrowerResource.get(0).getValue("id")));
@@ -173,20 +167,10 @@ public class LibraryBean implements Serializable {
     }
 
     private void displayError(String message, String detail) {
-        // FacesMessage msg = new FacesMessage(SEVERITY_ERROR, message, detail);
-        // FacesContext.getCurrentInstance().addMessage(null, msg);
         errorlog.error(message + ": " + detail);
-        System.out.println("test");
     }
 
     private void displayInfo(String message) {
-        // FacesMessage msg = new FacesMessage(SEVERITY_INFO, message, "");
-        // FacesContext.getCurrentInstance().addMessage(null, msg);
         errorlog.error(message);
-        System.out.println("test");
-    }
-
-    public List<Book> getBooks() {
-        return books;
     }
 }

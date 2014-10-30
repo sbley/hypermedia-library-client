@@ -58,7 +58,7 @@
             										<Button fx:id="rentButton" mnemonicParsing="false" onAction="#lendButtonPressed" text="Lend" />
             										<Button fx:id="returnButton" mnemonicParsing="false" onAction="#returnButtonPressed" text="Return" GridPane.rowIndex="1" />
             										<TextField fx:id="lendTextField" promptText="MemberID" GridPane.columnIndex="1" />
-            										<Label fx:id="returnName" text="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            										<Label fx:id="returnName" text="MemberID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             									</children>
             								</GridPane>
                                     <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="errorLabel" text="Label" textAlignment="CENTER" />
