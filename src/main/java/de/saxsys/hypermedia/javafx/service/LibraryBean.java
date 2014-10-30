@@ -1,6 +1,6 @@
-package de.saxsys.hypermedia.jsf;
+package de.saxsys.hypermedia.javafx.service;
 
-import static de.saxsys.hypermedia.jsf.HalUtil.replaceParam;
+import static de.saxsys.hypermedia.javafx.service.HalUtil.replaceParam;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
 
 import de.saxsys.hypermedia.javafx.ErrorLog;
-import de.saxsys.hypermedia.jsf.interceptor.MeasureTime;
+import de.saxsys.hypermedia.javafx.interceptor.MeasureTime;
 
 public class LibraryBean implements Serializable {
 

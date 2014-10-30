@@ -1,10 +1,10 @@
-package de.saxsys.hypermedia.jsf;
+package de.saxsys.hypermedia.javafx.service;
 
-import javax.enterprise.inject.Model;
+import javax.enterprise.inject.Vetoed;
 
 import com.theoryinpractise.halbuilder.api.Link;
 
-@Model
+@Vetoed
 public class Book {
 
     private final String href;

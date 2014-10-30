@@ -17,8 +17,8 @@ import javafx.scene.control.TextField;
 
 import javax.inject.Inject;
 
-import de.saxsys.hypermedia.jsf.Book;
-import de.saxsys.hypermedia.jsf.LibraryBean;
+import de.saxsys.hypermedia.javafx.service.Book;
+import de.saxsys.hypermedia.javafx.service.LibraryBean;
 import de.saxsys.mvvmfx.FxmlView;
 
 public class MainApplication implements FxmlView {

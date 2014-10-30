@@ -1,4 +1,4 @@
-package de.saxsys.hypermedia.jsf.interceptor;
+package de.saxsys.hypermedia.javafx.interceptor;
 
 import java.io.Serializable;
 

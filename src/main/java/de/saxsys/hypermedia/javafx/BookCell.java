@@ -1,7 +1,7 @@
 package de.saxsys.hypermedia.javafx;
 
 import javafx.scene.control.ListCell;
-import de.saxsys.hypermedia.jsf.Book;
+import de.saxsys.hypermedia.javafx.service.Book;
 
 public class BookCell extends ListCell<Book> {
     @Override
