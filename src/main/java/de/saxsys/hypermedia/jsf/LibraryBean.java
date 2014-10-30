@@ -21,6 +21,8 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.cache.BrowserCacheFeature;
+import org.jboss.resteasy.plugins.interceptors.encoding.AcceptEncodingGZIPFilter;
+import org.jboss.resteasy.plugins.interceptors.encoding.GZIPDecodingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +55,9 @@ public class LibraryBean implements Serializable {
         apiClient =
                 ClientBuilder.newClient()
                         .register(JaxRsHalBuilderReaderSupport.class)
-                        .register(BrowserCacheFeature.class);
+                        .register(BrowserCacheFeature.class)
+                        .register(GZIPDecodingInterceptor.class)
+                        .register(AcceptEncodingGZIPFilter.class);
     }
 
     @MeasureTime
