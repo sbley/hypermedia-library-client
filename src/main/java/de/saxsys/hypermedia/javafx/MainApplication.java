@@ -83,7 +83,8 @@ public class MainApplication implements FxmlView {
         bookList.setCellFactory(p -> new BookCell());
         listProgress.setVisible(false);
         detailProgress.setVisible(false);
-        bookList.getSelectionModel().selectedItemProperty()
+        bookList.getSelectionModel()
+                .selectedItemProperty()
                 .addListener((ChangeListener<Book>) (arg0, oldBook, newBook) -> {
                     if (newBook != null) {
                         requestBookDisplay(newBook);
@@ -95,7 +96,8 @@ public class MainApplication implements FxmlView {
             if (newBook != null) {
                 titleLabel.setText(newBook.getTitle() == null ? "" : newBook.getTitle());
                 authorLabel.setText(newBook.getAuthor() == null ? "" : newBook.getAuthor());
-                descriptionLabel.setText(newBook.getDesc() == null ? "No Description" : newBook.getDesc());
+                descriptionLabel.setText(newBook.getDesc() == null ? "No Description"
+                        : newBook.getDesc());
                 returnName.setText(newBook.getBorrower() == null ? "Fehler" : "Lend to member:"
                         + newBook.getBorrower().toString());
                 lendTextField.setVisible(!newBook.isLent());
@@ -120,11 +122,12 @@ public class MainApplication implements FxmlView {
     void lendButtonPressed(ActionEvent event) {
         detailProgress.setVisible(true);
         new Async(() -> {
-            Book lend = bean.lend(lendTextField.getText(), detailBook.get());
-            Platform.runLater(() -> {
-                displayBookDetails(lend);
-                detailProgress.setVisible(false);
-            });
+            try {
+                Book lend = bean.lend(lendTextField.getText(), detailBook.get());
+                Platform.runLater(() -> displayBookDetails(lend));
+            } finally {
+                Platform.runLater(() -> detailProgress.setVisible(false));
+            }
         }).start();
     }
 
@@ -132,43 +135,46 @@ public class MainApplication implements FxmlView {
     void returnButtonPressed(ActionEvent event) {
         detailProgress.setVisible(true);
         new Async(() -> {
-            Book takeBack = bean.takeBack(detailBook.get());
-            Platform.runLater(() -> {
-                displayBookDetails(takeBack);
-                detailProgress.setVisible(false);
-            });
+            try {
+                Book takeBack = bean.takeBack(detailBook.get());
+                Platform.runLater(() -> displayBookDetails(takeBack));
+            } finally {
+                Platform.runLater(() -> detailProgress.setVisible(false));
+            }
         }).start();
     }
 
     @FXML
     void searchButtonPressed(ActionEvent event) {
         listProgress.setVisible(true);
-        new Async(() -> {
-            List<Book> search = bean.search(searchTextField.getText());
-            Platform.runLater(() -> {
-                bookList.setItems(FXCollections.observableArrayList(search));
-                listProgress.setVisible(false);
-            });
-        }).start();
-
+        new Async(
+                () -> {
+                    try {
+                        List<Book> search = bean.search(searchTextField.getText());
+                        Platform.runLater(() -> bookList.setItems(FXCollections.observableArrayList(search)));
+                    } finally {
+                        Platform.runLater(() -> listProgress.setVisible(false));
+                    }
+                }).start();
     }
 
     private void requestBookDisplay(Book book) {
         listProgress.setVisible(true);
         new Async(() -> {
-            Book detail = bean.showDetails(book);
-            Platform.runLater(() -> {
-                Platform.runLater(() -> {
-                    displayBookDetails(detail);
-                    listProgress.setVisible(false);
-                });
-            });
+            try {
+                Book detail = bean.showDetails(book);
+                Platform.runLater(() -> displayBookDetails(detail));
+            } finally {
+                Platform.runLater(() -> listProgress.setVisible(false));
+            }
         }).start();
     }
 
     private void displayBookDetails(Book bookToLend) {
-        detailBook.set(null);
-        detailBook.set(bookToLend);
+        if (null != bookToLend) {
+            detailBook.set(null);
+            detailBook.set(bookToLend);
+        }
     }
 
 }

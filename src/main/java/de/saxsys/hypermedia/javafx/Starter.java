@@ -23,6 +23,7 @@ public class Starter extends MvvmfxCdiApplication {
 
         ViewTuple tuple = FluentViewLoader.fxmlView(MainApplication.class).load();
         Scene scene = new Scene(tuple.getView());
+        primaryStage.setTitle("Library JFX");
         primaryStage.setMinWidth(1200);
         primaryStage.setMaxWidth(1200);
         primaryStage.setMinHeight(700);

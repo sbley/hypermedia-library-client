@@ -2,6 +2,5 @@
 .classpath
 .tern-project
 .settings/
-target/
-
 .faces-config.xml.jsfdia
+target/
