@@ -32,12 +32,14 @@
     -fx-background-color: null;
     -fx-background-image:url("./menu.png");
     -fx-background-repeat:no-repeat;
+    visibility:false;
 }
 
 .decoration-button-menu:hover{
     -fx-background-color: null;
     -fx-background-image:url("./menu-hover.png");
     -fx-background-repeat:no-repeat;
+    visibility:false;
 }
 /*
 *	Minimize button
@@ -48,12 +50,14 @@
     -fx-background-color: null;
     -fx-background-image:url("./minimize.png");
     -fx-background-repeat:no-repeat;
+    visibility:false;
 }
 
 .decoration-button-minimize:hover{
     -fx-background-color: null;
     -fx-background-image:url("./minimize-hover.png");
     -fx-background-repeat:no-repeat;
+    visibility:false;
 }
 /*
 *	Maximize button
@@ -64,6 +68,7 @@
     -fx-background-color: null;
     -fx-background-image:url("./maximize.png");
     -fx-background-repeat:no-repeat;
+    visibility:false;
 }
 .decoration-button-maximize:hover{
     -fx-background-color: null;
@@ -76,6 +81,7 @@
     -fx-background-color: null;
     -fx-background-image:url("./restore.png");
     -fx-background-repeat:no-repeat;
+    visibility:false;
 }
 .decoration-button-restore:hover{
     -fx-background-color: null;
@@ -92,11 +98,6 @@
     -fx-background-image:url("./close.png");
     -fx-background-repeat:no-repeat;
 }
-.decoration-button-close:hover{
-    -fx-background-color: null;
-    -fx-background-image:url("./close-hover.png");
-    -fx-background-repeat:no-repeat;
-}
 /*
 *	Fullscreen button
 */
@@ -106,6 +107,7 @@
     -fx-background-color: null;
     -fx-background-image:url("./fullscreen.png");
     -fx-background-repeat:no-repeat;
+    visibility:false;
 }
 .decoration-button-fullscreen:hover{
     -fx-background-color: null;
