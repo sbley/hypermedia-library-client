@@ -64,4 +64,8 @@ public class Book {
     public Link getRelReturn() {
         return relReturn;
     }
+
+    public boolean isLent() {
+        return borrower != null;
+    }
 }

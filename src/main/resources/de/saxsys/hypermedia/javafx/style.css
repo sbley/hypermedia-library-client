@@ -1,0 +1,21 @@
+.container {
+    -fx-background-color:lightgray;
+}
+
+.label
+{
+    -fx-text-fill: black;
+}
+
+.title1{
+    -fx-font-size:50;
+}
+
+.title2{
+    -fx-font-size:40;
+}
+
+.errorLabel{
+    -fx-font-size:20;
+     -fx-text-fill: red;
+}

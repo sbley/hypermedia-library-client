@@ -2,6 +2,10 @@ package de.saxsys.hypermedia.javafx;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import com.guigarage.flatterfx.FlatterFX;
+import com.guigarage.flatterfx.FlatterInputType;
+
 import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.ViewTuple;
 import de.saxsys.mvvmfx.cdi.MvvmfxCdiApplication;
@@ -22,7 +26,7 @@ public class Starter extends MvvmfxCdiApplication {
         primaryStage.setScene(scene);
 
         primaryStage.show();
-        // FlatterFX.style(FlatterInputType.DEFAULT);
+        FlatterFX.style(FlatterInputType.DEFAULT);
     }
 
 }
