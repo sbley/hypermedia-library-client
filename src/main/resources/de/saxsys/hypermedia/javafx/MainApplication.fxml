@@ -60,7 +60,8 @@
 											size="" style="-fx-font-size: 3em; -fx-text-fill: gray;"
 											styleClass="">
 											<padding>
-												<Insets right="10.0" />
+												<Insets right="10.0" top="10"/>
+												
 											</padding>
 										</Icon>
 										<VBox spacing="10.0" AnchorPane.bottomAnchor="10.0"

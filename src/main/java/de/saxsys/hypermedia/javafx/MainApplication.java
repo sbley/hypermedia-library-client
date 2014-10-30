@@ -22,7 +22,6 @@ import de.saxsys.hypermedia.javafx.service.LibraryBean;
 import de.saxsys.mvvmfx.FxmlView;
 
 public class MainApplication implements FxmlView {
-
     @Inject
     private LibraryBean bean;
 
