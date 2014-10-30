@@ -25,7 +25,7 @@ public class Starter extends MvvmfxCdiApplication {
         Scene scene = new Scene(tuple.getView());
         primaryStage.setMinWidth(1200);
         primaryStage.setMaxWidth(1200);
-        primaryStage.setMinHeight(500);
+        primaryStage.setMinHeight(700);
         primaryStage.setScene(scene);
         primaryStage.show();
         FlatterFX.style(FlatterInputType.DEFAULT);

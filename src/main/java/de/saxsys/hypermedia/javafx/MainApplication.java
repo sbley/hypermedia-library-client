@@ -96,7 +96,8 @@ public class MainApplication implements FxmlView {
                 titleLabel.setText(newBook.getTitle() == null ? "" : newBook.getTitle());
                 authorLabel.setText(newBook.getAuthor() == null ? "" : newBook.getAuthor());
                 descriptionLabel.setText(newBook.getDesc() == null ? "No Description" : newBook.getDesc());
-                returnName.setText(newBook.getBorrower() == null ? "Fehler" : newBook.getBorrower().toString());
+                returnName.setText(newBook.getBorrower() == null ? "Fehler" : "Lend to member:"
+                        + newBook.getBorrower().toString());
                 lendTextField.setVisible(!newBook.isLent());
                 rentButton.setVisible(!newBook.isLent());
                 returnButton.setVisible(newBook.isLent());
