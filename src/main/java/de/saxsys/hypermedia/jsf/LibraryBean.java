@@ -89,7 +89,6 @@ public class LibraryBean implements Serializable {
         } catch (Throwable e) {
             e.printStackTrace();
             displayError("Error during search", e.getMessage());
-        } finally {
             return new ArrayList<Book>();
         }
     }

@@ -93,8 +93,7 @@ public class MainApplication implements FxmlView {
     }
 
     /*
-     * Fix of CDI + Guava 1.15 issue //
-     * https://code.google.com/p/guava-libraries/issues/detail?id=1433#c20
+     * Fix of CDI + Guava 1.15 issue // https://code.google.com/p/guava-libraries/issues/detail?id=1433#c20
      */
     @Produces
     Set<com.google.common.util.concurrent.Service> dummyServices() {
