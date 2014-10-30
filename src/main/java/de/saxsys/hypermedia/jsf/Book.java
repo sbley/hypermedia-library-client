@@ -7,13 +7,13 @@ import com.theoryinpractise.halbuilder.api.Link;
 @Model
 public class Book {
 
-    private String href;
-    private String title;
+    private final String href;
+    private final String title;
     private String author;
     private String desc;
     private Integer borrower;
-    private Link relLend;
-    private Link relReturn;
+    private final Link relLend;
+    private final Link relReturn;
 
     public Book(String href, String title, String author, String desc, Link relLend, Link relReturn) {
         super();
