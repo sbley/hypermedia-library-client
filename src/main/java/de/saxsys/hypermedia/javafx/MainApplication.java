@@ -71,6 +71,15 @@ public class MainApplication implements FxmlView {
     private final ObjectProperty<Book> detailBook = new SimpleObjectProperty<>();
 
     public void initialize() {
+
+        titleLabel.setText("");
+        authorLabel.setText("");
+        descriptionLabel.setText("");
+        lendTextField.setVisible(false);
+        rentButton.setVisible(false);
+        returnButton.setVisible(false);
+        returnName.setVisible(false);
+
         bookList.setCellFactory(p -> new BookCell());
         listProgress.setVisible(false);
         detailProgress.setVisible(false);
