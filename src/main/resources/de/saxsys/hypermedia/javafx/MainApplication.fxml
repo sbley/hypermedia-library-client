@@ -18,7 +18,7 @@
       							<children>
       								<HBox alignment="CENTER" spacing="5.0">
       									<children>
-      										<Label text="Book" HBox.hgrow="ALWAYS" />
+      										<Label text="Search for" HBox.hgrow="ALWAYS" />
       										<TextField fx:id="searchTextField" promptText="Query" HBox.hgrow="SOMETIMES" />
       										<Button fx:id="searchButton" defaultButton="true" mnemonicParsing="false" onAction="#searchButtonPressed" text="Search" HBox.hgrow="ALWAYS" />
       									</children>

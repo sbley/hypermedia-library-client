@@ -1,9 +1,11 @@
-package de.saxsys.hypermedia.jsf;
+package de.saxsys.hypermedia.javafx.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+
+import de.saxsys.hypermedia.javafx.service.HalUtil;
 
 public class HalUtilTest {
 

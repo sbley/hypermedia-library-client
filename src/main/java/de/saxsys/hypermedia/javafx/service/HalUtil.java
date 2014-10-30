@@ -1,4 +1,4 @@
-package de.saxsys.hypermedia.jsf;
+package de.saxsys.hypermedia.javafx.service;
 
 public class HalUtil {
 
