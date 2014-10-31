@@ -26,6 +26,7 @@ public class Starter extends MvvmfxCdiApplication {
         // FXMLLoader.load(getClass().getResource("MainApplication.fxml"));
 
         ViewTuple tuple = FluentViewLoader.fxmlView(MainApplication.class).load();
+        primaryStage.setTitle("Library JavaFX");
         primaryStage.setMinWidth(1200);
         primaryStage.setMaxWidth(1200);
         primaryStage.setMinHeight(700);
