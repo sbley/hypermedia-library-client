@@ -36,6 +36,7 @@ public class Starter extends MvvmfxCdiApplication {
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.show();
+        StageMover.makeStageMovable(primaryStage);
         FlatterFX.style(FlatterInputType.DEFAULT);
     }
 
