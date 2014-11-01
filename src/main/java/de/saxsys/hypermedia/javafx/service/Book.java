@@ -68,4 +68,12 @@ public class Book {
     public boolean isLent() {
         return borrower != null;
     }
+
+    public boolean isAvailable() {
+        return null != relLend;
+    }
+
+    public boolean isReturnable() {
+        return null != relReturn;
+    }
 }
