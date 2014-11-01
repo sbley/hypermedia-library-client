@@ -18,12 +18,12 @@ import javafx.scene.control.TextField;
 import javax.inject.Inject;
 
 import de.saxsys.hypermedia.javafx.service.Book;
-import de.saxsys.hypermedia.javafx.service.LibraryBean;
+import de.saxsys.hypermedia.javafx.service.LibraryService;
 import de.saxsys.mvvmfx.FxmlView;
 
 public class MainApplication implements FxmlView {
     @Inject
-    private LibraryBean bean;
+    private LibraryService bean;
 
     @FXML
     private Label titleLabel;

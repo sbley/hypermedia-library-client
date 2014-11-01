@@ -29,11 +29,11 @@ import com.theoryinpractise.halbuilder.jaxrs.JaxRsHalBuilderReaderSupport;
 import de.saxsys.hypermedia.javafx.ErrorLog;
 import de.saxsys.hypermedia.javafx.interceptor.MeasureTime;
 
-public class LibraryBean implements Serializable {
+public class LibraryService implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String BASE_URL = "http://nb170:8080/rest";
-    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryService.class);
 
     private Client apiClient;
 
@@ -124,7 +124,6 @@ public class LibraryBean implements Serializable {
             detailBook = toBook(rep);
             LOGGER.debug("Book {} lent to member {}", detailBook.getTitle(),
                     detailBook.getBorrower());
-            displayInfo("Book lent to member " + detailBook.getBorrower());
             return detailBook;
         }
     }
@@ -148,7 +147,6 @@ public class LibraryBean implements Serializable {
             return null;
         } else {
             LOGGER.debug("Book {} returned", detailBook.getTitle());
-            displayInfo("Book returned");
             return toBook(rep);
         }
     }
@@ -168,9 +166,5 @@ public class LibraryBean implements Serializable {
 
     private void displayError(String message, String detail) {
         errorlog.error(message + ": " + detail);
-    }
-
-    private void displayInfo(String message) {
-        errorlog.error(message);
     }
 }
